@@ -1,0 +1,2 @@
+naoqi_dcm_driver:naoqi_driver:pepper_apps:pepper_dcm_robot/pepper_dcm_bringup:pepper_moveit_config:pepper_robot/pepper_bringup:pepper_robot/pepper_description:pepper_robot/pepper_robot:pepper_robot/pepper_sensors_py:pepper_virtual/pepper_control:pepper_virtual/pepper_gazebo_plugin
+-DCATKIN_DEVEL_PREFIX=/home/shaytrix2/workspace/pepper_rob_ws/devel -DCMAKE_INSTALL_PREFIX=/home/shaytrix2/workspace/pepper_rob_ws/install -G Unix Makefiles

@@ -1,0 +1,36 @@
+<launch>
+  <param name="/use_sim_time" value="false"/>
+
+  <node pkg="topic_tools" type="relay" name="relay_front_rgb"
+        args="/naoqi_driver/camera/front/image_raw /pepper/camera/front/image_raw"/>
+  <node pkg="topic_tools" type="relay" name="relay_front_info"
+        args="/naoqi_driver/camera/front/camera_info /pepper/camera/front/camera_info"/>
+  <node pkg="topic_tools" type="relay" name="relay_depth_rgb"
+        args="/naoqi_driver/camera/depth/image_raw /pepper/camera/depth/image_raw"/>
+  <node pkg="topic_tools" type="relay" name="relay_depth_info"
+        args="/naoqi_driver/camera/depth/camera_info /pepper/camera/depth/camera_info"/>
+
+  <node pkg="topic_tools" type="relay" name="relay_imu_base"
+        args="/naoqi_driver/imu/base /pepper/imu"/>
+  <node pkg="topic_tools" type="relay" name="relay_laser"
+        args="/naoqi_driver/laser /pepper/scan_front"/>
+  <node pkg="topic_tools" type="relay" name="relay_odom"
+        args="/naoqi_driver/odom /pepper/odom"/>
+
+  <node pkg="topic_tools" type="relay" name="relay_joint_states"
+        args="/joint_states /joint_states"/>
+
+  <node pkg="topic_tools" type="relay" name="relay_diagnostics"
+        args="/diagnostics /diagnostics"/>
+
+  <node pkg="topic_tools" type="relay" name="relay_cmd_vel"
+        args="/pepper/cmd_vel /cmd_vel"/>
+
+  <arg name="ckpt" default="/home/shaytrix2/workspace/pepper_sim_ws/ckpts/20250909_152427/final_20250909_222629.zip"/>
+
+  <node pkg="pepper_apps"
+        type="run_policy_with_kill.py"
+        name="pepper_policy_runner"
+        output="screen"
+        args="--model $(arg ckpt) --image_topic /pepper/camera/front/image_raw --caminfo_topic /pepper/camera/front/camera_info --scan_topic /pepper/scan_front --cmd_topic /pepper/cmd_vel --deterministic --no-reset"/>
+</launch>

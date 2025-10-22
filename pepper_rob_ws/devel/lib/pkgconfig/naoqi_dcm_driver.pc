@@ -1,0 +1,8 @@
+prefix=/home/shaytrix2/workspace/pepper_rob_ws/devel
+
+Name: naoqi_dcm_driver
+Description: Description of naoqi_dcm_driver
+Version: 0.0.3
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp geometry_msgs tf std_msgs sensor_msgs hardware_interface controller_manager

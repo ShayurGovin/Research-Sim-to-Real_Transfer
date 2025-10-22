@@ -1,0 +1,2 @@
+gazebo_model_velocity_plugin:gym_pepper_env:pepper_robot/pepper_bringup:pepper_robot/pepper_description:pepper_robot/pepper_robot:pepper_robot/pepper_sensors_py:pepper_virtual/pepper_control:pepper_virtual/pepper_gazebo_plugin
+-DCATKIN_DEVEL_PREFIX=/home/shaytrix2/workspace/pepper_sim_ws/devel -DCMAKE_INSTALL_PREFIX=/home/shaytrix2/workspace/pepper_sim_ws/install -G Unix Makefiles

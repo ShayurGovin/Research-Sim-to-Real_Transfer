@@ -1,0 +1,8 @@
+prefix=/home/shaytrix2/workspace/pepper_rob_ws/devel
+
+Name: pepper_moveit_config
+Description: Description of pepper_moveit_config
+Version: 0.0.8
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/shaytrix2/workspace/pepper_rob_ws/install
+
+Name: pepper_apps
+Description: Description of pepper_apps
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,8 @@
+setup.py
+gym_env/__init__.py
+gym_env/pepper_env.py
+gym_pepper_env.egg-info/PKG-INFO
+gym_pepper_env.egg-info/SOURCES.txt
+gym_pepper_env.egg-info/dependency_links.txt
+gym_pepper_env.egg-info/requires.txt
+gym_pepper_env.egg-info/top_level.txt

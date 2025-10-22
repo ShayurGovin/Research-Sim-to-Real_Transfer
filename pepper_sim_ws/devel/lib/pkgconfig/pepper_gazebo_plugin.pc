@@ -1,0 +1,8 @@
+prefix=/home/shaytrix2/workspace/pepper_sim_ws/devel
+
+Name: pepper_gazebo_plugin
+Description: Description of pepper_gazebo_plugin
+Version: 0.0.4
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
