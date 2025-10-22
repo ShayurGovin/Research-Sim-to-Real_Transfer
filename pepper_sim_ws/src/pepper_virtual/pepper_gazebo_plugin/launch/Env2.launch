@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="launch_control_trajectory_all" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="world_name" default="$(find pepper_gazebo_plugin)/worlds/env2.world"/>
+
+  <env name="GAZEBO_MODEL_PATH" value="$(find pepper_gazebo_plugin)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <include file="$(find pepper_description)/launch/pepper_upload_CPU.launch"/>
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -x -0.02 -y -1.3 -z 0.1 -R 0.0 -P -0.175805 -Y 1.446857 -model pepper_MP"
+        output="screen" />
+
+  <include file="$(find pepper_control)/launch/pepper_control_trajectory_all.launch" if="$(arg launch_control_trajectory_all)"/>
+  <include file="$(find pepper_control)/launch/pepper_control_trajectory.launch" unless="$(arg launch_control_trajectory_all)"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="lower_arms" pkg="pepper_gazebo_plugin" type="arms_down.sh" output="screen" />
+
+  <node name="laser_publisher" pkg="pepper_gazebo_plugin" type="laser_publisher.py"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_base_tf"
+        args="0 0 0 0 0 0 base_footprint base_link" />
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_front_laser_tf"
+        args="0.3 0 0 0 0 0 base_link SurroundingFrontLaser_frame" />
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_right_laser_tf"
+        args="0.2 -0.2 0 0 0 1.57 base_link SurroundingRightLaser_frame" />
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_left_laser_tf"
+        args="0.2 0.2 0 0 0 -1.57 base_link SurroundingLeftLaser_frame" />
+</launch>

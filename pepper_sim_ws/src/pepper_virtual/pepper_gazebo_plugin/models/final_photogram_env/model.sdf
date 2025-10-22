@@ -1,0 +1,21 @@
+<sdf version="1.6">
+  <model name="final_photogram_env">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://final_photogram_env/meshes/PhotogrammetryEnvironment.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://final_photogram_env/meshes/PhotogrammetryEnvironment.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,83 @@
+<launch>
+
+  <!-- use simulation time from the bag -->
+  <param name="use_sim_time" value="true"/>
+
+  <!-- load your robot description -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro '$(find pepper_description)/urdf/pepper1.0_generated_urdf/pepper_robot.xacro'"/>
+
+  <!-- publish joint states & TF -->
+  <node name="joint_state_publisher"
+        pkg="joint_state_publisher"
+        type="joint_state_publisher" />
+  <node name="robot_state_publisher"
+        pkg="robot_state_publisher"
+        type="robot_state_publisher" />
+
+  <group ns="rtabmap">
+    <!-- RGB-D odometry -->
+    <node pkg="rtabmap_odom"
+          type="rgbd_odometry"
+          name="rgbd_odometry"
+          output="screen">
+      <param name="frame_id"                type="string" value="base_link"/>
+      <param name="odom_frame_id"           type="string" value="odom"/>
+      <param name="publish_tf"              type="bool"   value="true"/>
+      <param name="approx_sync"             type="bool"   value="true"/>
+      <param name="approx_sync_max_interval" type="double" value="0.02"/>
+      <param name="Vis/MinInliers"          type="int"    value="12"/>
+
+      <remap from="rgb/image"           to="/pepper/camera/front/image_raw"/>
+      <remap from="depth/image"         to="/pepper/camera/depth/image_raw"/>
+      <remap from="rgb/camera_info"     to="/pepper/camera/front/camera_info"/>
+      <remap from="depth/camera_info"   to="/pepper/camera/depth/camera_info"/>
+    </node>
+
+    <!-- SLAM & mapping -->
+    <node name="rtabmap"
+          pkg="rtabmap_slam"
+          type="rtabmap"
+          output="screen"
+          args="--delete_db_on_start">  <!-- keep this only for your very first mapping run -->
+      <!-- once your DB exists, remove the above arg so you don't clear the map every time -->
+
+      <!-- subscribe to RGB-D and start in LOCALIZATION mode on replay/loop -->
+      <param name="subscribe_rgbd"               type="bool"  value="true"/>
+      <param name="Rtabmap/Localization"         type="bool"  value="false"/>
+      <param name="Regenerate3DMapOnLoopClosure" type="bool"  value="true"/>
+
+      <!-- tuning parameters -->
+      <param name="Vis/MinInliers" type="int" value="8"/>
+      <param name="Vis/MaxFeatures" type="int" value="1000"/>
+
+      <remap from="odom"       to="odom"/>
+      <remap from="rgbd_image" to="rgbd_image"/>
+
+      <param name="frame_id"       type="string" value="base_link"/>
+      <remap from="grid_map"      to="/map"/>
+      <param name="publish_tf_map" type="bool"   value="true"/>
+    </node>
+
+    <!-- RGB/Depth synchronizer -->
+    <node pkg="nodelet"
+          type="nodelet"
+          name="rgbd_sync"
+          args="standalone rtabmap_sync/rgbd_sync"
+          output="screen">
+      <param name="approx_sync_max_interval" type="double" value="0.02"/>
+      <remap from="rgb/image"         to="/pepper/camera/front/image_raw"/>
+      <remap from="depth/image"       to="/pepper/camera/depth/image_raw"/>
+      <remap from="rgb/camera_info"   to="/pepper/camera/front/camera_info"/>
+      <remap from="depth/camera_info" to="/pepper/camera/depth/camera_info"/>
+      <remap from="rgbd_image"        to="rgbd_image"/>
+    </node>
+  </group>
+
+  <!-- RViz: switch your PointCloud2 display to `/rtabmap/cloud_map` -->
+  <node name="rviz"
+        pkg="rviz"
+        type="rviz"
+        args="-d $(find pepper_gazebo_plugin)/rviz/pepper_rtabmap.rviz"
+        required="true" />
+</launch>

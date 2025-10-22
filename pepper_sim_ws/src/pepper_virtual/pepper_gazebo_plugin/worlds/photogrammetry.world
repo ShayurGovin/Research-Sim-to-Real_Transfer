@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://photogram_env</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://pepper</uri>
+      <pose>1 0 0 0 0 0</pose>
+    </include>
+
+    <plugin name="pepper_planar_move" filename="libgazebo_ros_planar_move.so">
+      <bodyName>base_link</bodyName>
+    </plugin>
+
+  </world>
+</sdf>
